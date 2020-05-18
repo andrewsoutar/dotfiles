@@ -26,6 +26,7 @@
  '(fill-column 80)
  '(gdb-many-windows t)
  '(indent-tabs-mode nil)
+ '(js2-basic-offset 2)
  '(jvm-mode t)
  '(lisp-mode-hook
    (quote
@@ -57,7 +58,7 @@
      ("gnu" . "https://elpa.gnu.org/packages/"))))
  '(package-selected-packages
    (quote
-    (markdown-mode bison-mode glsl-mode autodisass-java-bytecode haskell-mode tuareg graphviz-dot-mode docker go-mode go nginx-mode magit web-mode paredit sly solarized-theme)))
+    (js2-mode markdown-mode bison-mode glsl-mode autodisass-java-bytecode haskell-mode tuareg graphviz-dot-mode docker go-mode go nginx-mode magit web-mode paredit sly solarized-theme)))
  '(safe-local-variable-values
    (quote
     ((Package . CL-PPCRE)
