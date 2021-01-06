@@ -1,0 +1,88 @@
+#+TITLE: Andrew Soutar's Emacs Config
+#+AUTHOR: Andrew Soutar <andrew@andrewsoutar.com>
+#+STARTUP: indent
+
+* Trivia
+** Set up directories for future use
+#+begin_src elisp
+  (defun getenv-dir (env-var default)
+    (expand-file-name (or (getenv env-var) default)))
+
+  (defvar xdg-config-home (getenv-dir "XDG_CONFIG_HOME" "~/.config/"))
+  (defvar xdg-cache-home (getenv-dir "XDG_CACHE_HOME" "~/.cache/"))
+  (defvar xdg-data-home (getenv-dir "XDG_DATA_HOME" "~/.local/share/"))
+
+  (defun emacs-config-path (path)
+    (expand-file-name path (expand-file-name "emacs/" xdg-config-home)))
+  (defun emacs-cache-path (path)
+    (expand-file-name path (expand-file-name "emacs/" xdg-cache-home)))
+  (defun emacs-data-path (path)
+    (expand-file-name path (expand-file-name "emacs/" xdg-data-home)))
+
+  (setf user-emacs-directory (emacs-data-path ""))
+#+end_src
+** Use a different custom file
+#+begin_src elisp
+  (customize-set-variable 'custom-file (emacs-config-path "custom.el"))
+  (load custom-file t nil t)
+#+end_src
+** Set up the ~package~ system
+#+begin_src elisp
+  (customize-set-variable 'package-user-dir (emacs-cache-path "elpa/"))
+
+  (require 'package)
+  (package-initialize)
+#+end_src
+** Make sure ~use-package~ is installed
+#+begin_src elisp
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
+
+  (require 'use-package)
+#+end_src
+** Setup for ~use-package~
+#+begin_src elisp
+  (use-package use-package
+    :custom
+    (use-package-always-defer t)
+    (use-package-always-ensure t))
+#+end_src
+** Basic setup
+#+begin_src elisp
+  (use-package emacs
+    :custom
+    (make-backup-files nil))
+#+end_src
+* Theme and Visuals
+#+begin_src elisp
+  (use-package emacs
+    :custom
+    (menu-bar-mode nil)
+    (tool-bar-mode nil)
+    (scroll-bar-mode nil))
+
+  (use-package solarized-theme
+    :init (load-theme 'solarized-dark t))
+#+end_src
+* TRAMP
+#+begin_src elisp
+  (use-package tramp
+    :custom
+    (tramp-default-method "ssh"))
+#+end_src
+
+* Lisp Stuff
+** Paredit
+#+begin_src elisp
+  (use-package paredit
+    :hook
+    (lisp-mode . paredit-mode)
+    (emacs-lisp-mode . paredit-mode))
+#+end_src
+* Magit
+#+begin_src elisp
+  (use-package magit)
+#+end_src
