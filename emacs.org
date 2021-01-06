@@ -12,14 +12,18 @@
   (defvar xdg-cache-home (getenv-dir "XDG_CACHE_HOME" "~/.cache/"))
   (defvar xdg-data-home (getenv-dir "XDG_DATA_HOME" "~/.local/share/"))
 
-  (defun emacs-config-path (path)
-    (expand-file-name path (expand-file-name "emacs/" xdg-config-home)))
-  (defun emacs-cache-path (path)
-    (expand-file-name path (expand-file-name "emacs/" xdg-cache-home)))
-  (defun emacs-data-path (path)
-    (expand-file-name path (expand-file-name "emacs/" xdg-data-home)))
+  (defun get-expanded-path (path xdg-dir)
+    (let ((base (expand-file-name "emacs/" xdg-dir)))
+      (if path (expand-file-name path base) base)))
 
-  (setf user-emacs-directory (emacs-data-path ""))
+  (defun emacs-config-path (&optional path)
+    (get-expanded-path path xdg-config-home))
+  (defun emacs-cache-path (&optional path)
+    (get-expanded-path path xdg-cache-home))
+  (defun emacs-data-path (&optional path)
+    (get-expanded-path path xdg-data-home))
+
+  (setf user-emacs-directory (emacs-data-path))
 #+end_src
 ** Use a different custom file
 #+begin_src elisp
