@@ -25,34 +25,34 @@
 
   (setf user-emacs-directory (emacs-data-path))
 #+end_src
-** Use a different custom file
+** Bootstrap [[https://github.com/raxod502/straight.el][straight.el]]
 #+begin_src elisp
-  (customize-set-variable 'custom-file (emacs-config-path "custom.el"))
-  (load custom-file t nil t)
-#+end_src
-** Set up the ~package~ system
-#+begin_src elisp
-  (customize-set-variable 'package-user-dir (emacs-cache-path "elpa/"))
-
-  (require 'package)
-  (package-initialize)
-#+end_src
-** Make sure ~use-package~ is installed
-#+begin_src elisp
-  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-
-  (unless (package-installed-p 'use-package)
-    (package-refresh-contents)
-    (package-install 'use-package))
-
-  (require 'use-package)
+  (defvar straight-base-dir (emacs-cache-path))
+  (defvar bootstrap-version)
+  (let ((bootstrap-file
+         (expand-file-name "straight/repos/straight.el/bootstrap.el" straight-base-dir))
+        (bootstrap-version 5))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+          (url-retrieve-synchronously
+           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+           'silent 'inhibit-cookies)
+        (goto-char (point-max))
+        (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
 #+end_src
 ** Setup for ~use-package~
 #+begin_src elisp
+  (straight-use-package 'use-package)
   (use-package use-package
-    :custom
-    (use-package-always-defer t)
-    (use-package-always-ensure t))
+    :straight t
+    :custom (use-package-always-defer t))
+#+end_src
+** Use a different custom file
+#+begin_src elisp
+  (use-package emacs
+    :custom (custom-file (emacs-config-path "custom.el"))
+    :config (load custom-file 'noerror nil 'nosuffix))
 #+end_src
 ** Basic setup
 #+begin_src elisp
@@ -69,6 +69,7 @@
     (scroll-bar-mode nil))
 
   (use-package solarized-theme
+    :straight t
     :init (load-theme 'solarized-dark t))
 #+end_src
 * TRAMP
@@ -77,16 +78,17 @@
     :custom
     (tramp-default-method "ssh"))
 #+end_src
-
 * Lisp Stuff
 ** Paredit
 #+begin_src elisp
   (use-package paredit
+    :straight t
     :hook
     (lisp-mode . paredit-mode)
     (emacs-lisp-mode . paredit-mode))
 #+end_src
 * Magit
 #+begin_src elisp
-  (use-package magit)
+  (use-package magit
+    :straight t)
 #+end_src
