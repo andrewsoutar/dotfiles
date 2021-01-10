@@ -60,6 +60,11 @@
     :custom
     (make-backup-files nil))
 #+end_src
+* Keybindings
+#+begin_src elisp
+  (use-package windmove
+    :init (windmove-default-keybindings))
+#+end_src
 * Theme and Visuals
 #+begin_src elisp
   (use-package emacs
