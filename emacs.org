@@ -84,6 +84,14 @@
     (tramp-default-method "ssh"))
 #+end_src
 * Lisp Stuff
+#+begin_src elisp
+  (use-package lisp-mode
+    :config
+    (modify-syntax-entry ?\[ "(]" lisp-mode-syntax-table)
+    (modify-syntax-entry ?\] ")[" lisp-mode-syntax-table)
+    (modify-syntax-entry ?\{ "(}" lisp-mode-syntax-table)
+    (modify-syntax-entry ?\} "){" lisp-mode-syntax-table))
+#+end_src
 ** Paredit
 #+begin_src elisp
   (use-package paredit
