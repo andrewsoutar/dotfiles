@@ -118,6 +118,13 @@
     (lisp-mode . paredit-mode)
     (emacs-lisp-mode . paredit-mode))
 #+end_src
+** Sly
+#+begin_src elisp
+  (use-package sly
+    :straight t
+    :custom (inferior-lisp-program "sbcl"))
+#+end_src
+
 * Magit
 #+begin_src elisp
   (use-package magit
