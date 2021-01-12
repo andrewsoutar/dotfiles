@@ -130,3 +130,22 @@
   (use-package magit
     :straight t)
 #+end_src
+
+
+* Local setup
+#+begin_src elisp
+  (use-package tramp
+    :custom
+    (tramp-local-host-regexp nil)
+    :config
+    (add-to-list 'tramp-default-host-alist '("toolbox" nil "fedora-toolbox-33"))
+    (add-to-list 'tramp-default-proxies-alist '("^[^.#]*-toolbox-[^.#]*$" nil "/-:flatpak-host:")))
+
+  (use-package sly-tramp
+    :config
+    (add-to-list 'sly-filename-translations
+                 (sly-create-filename-translator
+                  :machine-instance "toolbox"
+                  :remote-host "fedora-toolbox-33"
+                  :username "")))
+#+end_src
