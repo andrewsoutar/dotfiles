@@ -77,11 +77,29 @@
     :straight t
     :init (load-theme 'solarized-dark t))
 #+end_src
-* TRAMP
+* Remoting
 #+begin_src elisp
   (use-package tramp
     :custom
-    (tramp-default-method "ssh"))
+    (tramp-default-method "ssh")
+    :config
+    (add-to-list 'tramp-methods
+                 '("flatpak-host"
+                   (tramp-remote-shell "/bin/sh")
+                   (tramp-login-program "flatpak-spawn")
+                   (tramp-login-args (("--host")
+                                      ("%l")))))
+    (add-to-list 'tramp-default-host-alist '("flatpak-host" nil "flatpak-host"))
+    (add-to-list 'tramp-default-method-alist '("^flatpak-host$" nil "flatpak-host"))
+
+    (add-to-list 'tramp-methods
+                 '("toolbox"
+                   (tramp-remote-shell "/bin/sh")
+                   (tramp-login-program "toolbox run")
+                   ;; Need to have ("%h") separately because tramp sucks
+                   (tramp-login-args (("-c") ("%h")
+                                      ("%l")))))
+    (add-to-list 'tramp-default-method-alist '("^[^.#]*-toolbox-[^.#]*$" nil "toolbox")))
 #+end_src
 * Lisp Stuff
 #+begin_src elisp
