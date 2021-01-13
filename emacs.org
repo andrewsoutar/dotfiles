@@ -101,6 +101,17 @@
                                       ("%l")))))
     (add-to-list 'tramp-default-method-alist '("^[^.#]*-toolbox-[^.#]*$" nil "toolbox")))
 #+end_src
+* General Stuff
+** Indentation
+#+begin_src elisp
+  (use-package emacs
+    :custom (indent-tabs-mode nil))
+#+end_src
+** Electricity
+#+begin_src elisp
+  (use-package elec-pair
+    :hook (prog-mode . electric-pair-local-mode))
+#+end_src
 * Lisp Stuff
 #+begin_src elisp
   (use-package lisp-mode
