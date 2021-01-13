@@ -148,4 +148,8 @@
                   :machine-instance "toolbox"
                   :remote-host "fedora-toolbox-33"
                   :username "")))
+
+  (use-package woman
+    :config
+    (add-to-list 'woman-path "/toolbox::/usr/share/man"))
 #+end_src
