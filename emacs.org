@@ -3,6 +3,10 @@
 #+STARTUP: indent
 
 * Trivia
+** Pull out environment variables
+#+begin_src elisp :var platform=(getenv "EMACS_PLATFORM")
+  (defvar *config-emacs-platform* platform)
+#+end_src
 ** Set up directories for future use
 #+begin_src elisp
   (defun getenv-dir (env-var default)
@@ -145,12 +149,18 @@
 
 * Local setup
 #+begin_src elisp
+  (unless (string= *config-emacs-platform* "native")
+    (use-package tramp
+      :custom (tramp-local-host-regexp nil)))
+
+  (when (string= *config-emacs-platform* "flatpak")
+    (use-package tramp
+      :config (add-to-list 'tramp-default-proxies-alist
+                           '("^[^.#]*-toolbox-[^.#]*$" nil "/-:flatpak-host:"))))
+
   (use-package tramp
-    :custom
-    (tramp-local-host-regexp nil)
     :config
-    (add-to-list 'tramp-default-host-alist '("toolbox" nil "fedora-toolbox-33"))
-    (add-to-list 'tramp-default-proxies-alist '("^[^.#]*-toolbox-[^.#]*$" nil "/-:flatpak-host:")))
+    (add-to-list 'tramp-default-host-alist '("toolbox" nil "fedora-toolbox-33")))
 
   (use-package sly-tramp
     :config

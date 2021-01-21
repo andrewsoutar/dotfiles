@@ -1,0 +1,1 @@
+EMACS_PLATFORM = flatpak
