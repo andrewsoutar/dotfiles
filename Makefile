@@ -27,15 +27,20 @@ clean: $(patsubst %,clean-%,$(ALL_COMPONENTS))
 
 EMACS_DEPENDENCIES = emacs.el
 
+.PHONY: install-git-emacs-link
 ifeq ($(EMACS_PLATFORM), flatpak)
 EMACS_PREFIX ?= $(PREFIX)/.var/app/org.gnu.emacs/config/emacs
+install-emacs-git-link:
+	ln --relative --symbolic --force --no-target-directory -- \
+	  '$(PREFIX)/.config/git' '$(EMACS_PREFIX)/../git'
 else
 EMACS_PREFIX ?= $(PREFIX)/.config/emacs
+install-emacs-git-link:
 endif
 
 all-emacs: $(EMACS_DEPENDENCIES)
 
-install-emacs: $(EMACS_DEPENDENCIES)
+install-emacs: $(EMACS_DEPENDENCIES) install-emacs-git-link
 	install -D --no-target-directory emacs.el '$(EMACS_PREFIX)/init.el'
 
 clean-emacs:
