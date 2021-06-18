@@ -157,7 +157,11 @@
   (when (string= *config-emacs-platform* "flatpak")
     (use-package tramp
       :config (add-to-list 'tramp-default-proxies-alist
-                           '("^[^.#]*-toolbox-[^.#]*$" nil "/-:flatpak-host:"))))
+                           '("^[^.#]*-toolbox-[^.#]*$" nil "/-:flatpak-host:")))
+
+    (use-package woman
+      :config
+      (add-to-list 'woman-manpath "/flatpak-host::/usr/share/man")))
 
   (when (and *config-toolbox* (not (string= *config-toolbox* "")))
     (use-package tramp
@@ -174,5 +178,5 @@
 
     (use-package woman
       :config
-      (add-to-list 'woman-path "/toolbox::/usr/share/man")))
+      (add-to-list 'woman-manpath "/toolbox::/usr/share/man")))
 #+end_src
