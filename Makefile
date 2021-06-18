@@ -56,3 +56,6 @@ all-git: gitconfig
 
 install-git: gitconfig
 	install -D --no-target-directory gitconfig '$(PREFIX)/.config/git/config'
+
+clean-git:
+	-rm -f gitconfig
