@@ -3,12 +3,15 @@ PREFIX := $(HOME)
 ALL_COMPONENTS = emacs git
 COMPONENTS = $(ALL_COMPONENTS)
 
-EMACS_PLATFORM = native
+CONFIG_EMACS_PLATFORM = native
+CONFIG_TOOLBOX =
 
 include platform.mk
 
 
-CONFIG_ENV = env 'EMACS_PLATFORM=$(EMACS_PLATFORM)'
+CONFIG_ENV = env \
+  'CONFIG_EMACS_PLATFORM=$(CONFIG_EMACS_PLATFORM)' \
+  'CONFIG_TOOLBOX=$(CONFIG_TOOLBOX)'
 
 .PHONY: all install clean
 
@@ -28,7 +31,7 @@ clean: $(patsubst %,clean-%,$(ALL_COMPONENTS))
 EMACS_DEPENDENCIES = emacs.el
 
 .PHONY: install-git-emacs-link
-ifeq ($(EMACS_PLATFORM), flatpak)
+ifeq ($(CONFIG_EMACS_PLATFORM), flatpak)
 EMACS_PREFIX ?= $(PREFIX)/.var/app/org.gnu.emacs/config/emacs
 install-emacs-git-link:
 	ln --relative --symbolic --force --no-target-directory -- \

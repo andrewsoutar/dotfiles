@@ -4,8 +4,9 @@
 
 * Trivia
 ** Pull out environment variables
-#+begin_src elisp :var platform=(getenv "EMACS_PLATFORM")
-  (defvar *config-emacs-platform* platform)
+#+begin_src elisp :var emacs-platform=(getenv "CONFIG_EMACS_PLATFORM") toolbox=(getenv "CONFIG_TOOLBOX")
+  (defvar *config-emacs-platform* emacs-platform)
+  (defvar *config-toolbox* (string= toolbox "true"))
 #+end_src
 ** Set up directories for future use
 #+begin_src elisp
@@ -158,19 +159,20 @@
       :config (add-to-list 'tramp-default-proxies-alist
                            '("^[^.#]*-toolbox-[^.#]*$" nil "/-:flatpak-host:"))))
 
-  (use-package tramp
-    :config
-    (add-to-list 'tramp-default-host-alist '("toolbox" nil "fedora-toolbox-33")))
+  (when *config-toolbox*
+    (use-package tramp
+      :config
+      (add-to-list 'tramp-default-host-alist '("toolbox" nil "fedora-toolbox-33")))
 
-  (use-package sly-tramp
-    :config
-    (add-to-list 'sly-filename-translations
-                 (sly-create-filename-translator
-                  :machine-instance "toolbox"
-                  :remote-host "fedora-toolbox-33"
-                  :username "")))
+    (use-package sly-tramp
+      :config
+      (add-to-list 'sly-filename-translations
+                   (sly-create-filename-translator
+                    :machine-instance "toolbox"
+                    :remote-host "fedora-toolbox-33"
+                    :username "")))
 
-  (use-package woman
-    :config
-    (add-to-list 'woman-path "/toolbox::/usr/share/man"))
+    (use-package woman
+      :config
+      (add-to-list 'woman-path "/toolbox::/usr/share/man")))
 #+end_src

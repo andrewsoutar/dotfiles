@@ -1,1 +1,1 @@
-EMACS_PLATFORM = flatpak
+CONFIG_EMACS_PLATFORM = flatpak
