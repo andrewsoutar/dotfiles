@@ -1,2 +1,2 @@
 CONFIG_EMACS_PLATFORM = flatpak
-CONFIG_TOOLBOX = fedora-toolbox-33
+CONFIG_TOOLBOX = fedora-toolbox-34
