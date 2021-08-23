@@ -141,6 +141,15 @@
     :custom (inferior-lisp-program "sbcl"))
 #+end_src
 
+*** Quicklisp
+#+begin_src elisp
+  (use-package sly-quicklisp
+    :straight t)
+
+  (use-package sly
+    :config (add-to-list 'sly-contribs 'sly-quicklisp))
+#+end_src
+
 * Magit
 #+begin_src elisp
   (use-package magit
