@@ -156,6 +156,27 @@
     :straight t)
 #+end_src
 
+* Org Mode
+** Babel setup
+#+begin_src elisp
+  (use-package org
+    :custom (org-babel-load-languages '((emacs-lisp . t)
+                                        (lisp . t)
+                                        (python . t)
+                                        (ruby . t)
+                                        (dot . t))))
+
+  (use-package ob-lisp
+    :custom (org-babel-lisp-eval-fn 'sly-eval))
+#+end_src
+** Minted
+#+begin_src elisp
+  (use-package ox-latex
+    :custom
+    (org-latex-listings 'minted)
+    (org-latex-packages-alist '(("" "minted")))
+    (org-latex-pdf-process (make-list 3 "%latex -shell-escape -interaction nonstopmode -output-directory %o %f")))
+#+end_src
 
 * Local setup
 #+begin_src elisp
