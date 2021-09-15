@@ -55,10 +55,11 @@ clean-emacs:
 gitconfig: make-gitconfig.sh
 	./'$<' '$@'
 
-all-git: gitconfig
+all-git: gitconfig gitignore
 
-install-git: gitconfig
+install-git: gitconfig gitignore
 	install -D --no-target-directory gitconfig '$(PREFIX)/.config/git/config'
+	install -D --no-target-directory gitignore '$(PREFIX)/.config/git/ignore'
 
 clean-git:
 	-rm -f gitconfig
