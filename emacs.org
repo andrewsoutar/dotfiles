@@ -177,7 +177,21 @@
     (org-latex-packages-alist '(("" "minted")))
     (org-latex-pdf-process (make-list 3 "%latex -shell-escape -interaction nonstopmode -output-directory %o %f")))
 #+end_src
+* Webdev
+** ~web-mode~
+#+begin_src elisp
+  (use-package web-mode
+    :straight t
+    :custom
+    (web-mode-code-indent-offset 2)
+    (web-mode-css-indent-offset 2)
+    (web-mode-markup-indent-offset 2)
+    (web-mode-sql-indent-offset 2))
 
+  (use-package emacs
+    :config
+    (add-to-list 'auto-mode-alist '("\\.svelte\\'" . web-mode)))
+#+end_src
 * Local setup
 #+begin_src elisp
   (unless (string= *config-emacs-platform* "native")
