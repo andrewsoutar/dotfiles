@@ -20,7 +20,8 @@ install: $(patsubst %,install-%,$(COMPONENTS))
 clean: $(patsubst %,clean-%,$(ALL_COMPONENTS))
 
 %.el: %.org
-	$(CONFIG_ENV) emacs --quick --batch --eval "(require 'org)" --eval "(apply 'org-babel-tangle-file (cdr command-line-args-left))" -- '$<' '$@'
+	$(CONFIG_ENV) emacs --quick --batch --eval "(require 'org)" --eval \
+	  "(let ((org-file (cadr command-line-args-left))) (org-babel-tangle-file org-file (concat (file-name-base org-file) \".el\")))" -- '$<'
 
 %.elc: %.el
 	emacs --quick --batch --eval "(byte-compile-file (cadr command-line-args-left))" -- '$<'
@@ -28,7 +29,7 @@ clean: $(patsubst %,clean-%,$(ALL_COMPONENTS))
 
 .PHONY: all-emacs install-emacs clean-emacs
 
-EMACS_DEPENDENCIES = emacs.el
+EMACS_DEPENDENCIES = emacs/emacs.el
 
 .PHONY: install-git-emacs-link
 ifeq ($(CONFIG_EMACS_PLATFORM), flatpak)
@@ -44,7 +45,7 @@ endif
 all-emacs: $(EMACS_DEPENDENCIES)
 
 install-emacs: $(EMACS_DEPENDENCIES) install-emacs-git-link
-	install -D --no-target-directory emacs.el '$(EMACS_PREFIX)/init.el'
+	install -D --no-target-directory emacs/emacs.el '$(EMACS_PREFIX)/init.el'
 
 clean-emacs:
 	-rm -f $(EMACS_DEPENDENCIES)
@@ -52,14 +53,14 @@ clean-emacs:
 
 .PHONY: all-git install-git
 
-gitconfig: make-gitconfig.sh
+git/gitconfig: git/make-gitconfig.sh
 	./'$<' '$@'
 
-all-git: gitconfig gitignore
+all-git: git/gitconfig git/gitignore
 
-install-git: gitconfig gitignore
-	install -D --no-target-directory gitconfig '$(PREFIX)/.config/git/config'
-	install -D --no-target-directory gitignore '$(PREFIX)/.config/git/ignore'
+install-git: git/gitconfig git/gitignore
+	install -D --no-target-directory git/gitconfig '$(PREFIX)/.config/git/config'
+	install -D --no-target-directory git/gitignore '$(PREFIX)/.config/git/ignore'
 
 clean-git:
-	-rm -f gitconfig
+	-rm -f git/gitconfig
