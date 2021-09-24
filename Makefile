@@ -1,6 +1,6 @@
 PREFIX ?= $(HOME)
 
-ALL_COMPONENTS = bash emacs git ssh xdg
+ALL_COMPONENTS = bash container_shim emacs git ssh xdg
 
 CONFIG_EMACS_PLATFORM = native
 CONFIG_TOOLBOX =
@@ -36,6 +36,18 @@ install-bash: all-bash
 	install -D --no-target-directory bash/redirect_profile.bash '$(PREFIX)/.bash_profile'
 
 clean-bash:
+
+
+.PHONY: all-container_shim install-container_shim clean-container_shim
+
+all-container_shim: container_shim/shim.sh
+
+install-container_shim: all-container_shim
+	for shim in $(CONTAINER_SHIMS); do \
+	  install -D --no-target-directory --mode=755 container_shim/shim.sh '$(PREFIX)/.local/bin/'"$$shim"; \
+	done
+
+clean-container_shim:
 
 
 .PHONY: all-emacs install-emacs clean-emacs
