@@ -1,7 +1,6 @@
-PREFIX := $(HOME)
+PREFIX ?= $(HOME)
 
 ALL_COMPONENTS = bash emacs git xdg
-COMPONENTS = $(ALL_COMPONENTS)
 
 CONFIG_EMACS_PLATFORM = native
 CONFIG_TOOLBOX =
@@ -32,9 +31,9 @@ clean: $(patsubst %,clean-%,$(ALL_COMPONENTS))
 all-bash: bash/rc.bash bash/profile.bash bash/redirect_rc.bash bash/redirect_profile.bash
 
 install-bash: all-bash
-	install -D --target-directory="$${HOME}/.config/bash/" bash/rc.bash bash/profile.bash
-	install -D --no-target-directory bash/redirect_rc.bash "$${HOME}/.bashrc"
-	install -D --no-target-directory bash/redirect_profile.bash "$${HOME}/.bash_profile"
+	install -D --target-directory='$(PREFIX)/.config/bash/' bash/rc.bash bash/profile.bash
+	install -D --no-target-directory bash/redirect_rc.bash '$(PREFIX)/.bashrc'
+	install -D --no-target-directory bash/redirect_profile.bash '$(PREFIX)/.bash_profile'
 
 clean-bash:
 
@@ -63,7 +62,7 @@ clean-emacs:
 	-rm -f $(EMACS_DEPENDENCIES)
 
 
-.PHONY: all-git install-git
+.PHONY: all-git install-git clean-git
 
 git/gitconfig: git/make-gitconfig.sh
 	./'$<' '$@'
