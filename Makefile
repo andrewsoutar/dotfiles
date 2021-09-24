@@ -1,6 +1,6 @@
 PREFIX := $(HOME)
 
-ALL_COMPONENTS = bash emacs git
+ALL_COMPONENTS = bash emacs git xdg
 COMPONENTS = $(ALL_COMPONENTS)
 
 CONFIG_EMACS_PLATFORM = native
@@ -76,3 +76,13 @@ install-git: git/gitconfig git/gitignore
 
 clean-git:
 	-rm -f git/gitconfig
+
+
+.PHONY: all-xdg install-xdg clean-xdg
+
+all-xdg: xdg/env.conf
+
+install-xdg: all-xdg
+	install -D --no-target-directory xdg/env.conf '$(PREFIX)/.config/environment.d/10-xdg.conf'
+
+clean-xdg:
