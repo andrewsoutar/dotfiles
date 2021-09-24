@@ -42,20 +42,20 @@ clean-bash:
 
 EMACS_DEPENDENCIES = emacs/emacs.el
 
-.PHONY: install-git-emacs-link
+.PHONY: install-emacs-flatpak-symlinks
 ifeq ($(CONFIG_EMACS_PLATFORM), flatpak)
 EMACS_PREFIX ?= $(PREFIX)/.var/app/org.gnu.emacs/config/emacs
-install-emacs-git-link:
-	ln --relative --symbolic --force --no-target-directory -- \
-	  '$(PREFIX)/.config/git' '$(EMACS_PREFIX)/../git'
+install-emacs-flatpak-symlinks:
+	ln --relative --symbolic --force --target-directory='$(EMACS_PREFIX)/../' \
+	  '$(PREFIX)/.config/bash' '$(PREFIX)/.config/git' '$(PREFIX)/.config/ssh'
 else
 EMACS_PREFIX ?= $(PREFIX)/.config/emacs
-install-emacs-git-link:
+install-emacs-flatpak-symlinks:
 endif
 
 all-emacs: $(EMACS_DEPENDENCIES)
 
-install-emacs: $(EMACS_DEPENDENCIES) install-emacs-git-link
+install-emacs: $(EMACS_DEPENDENCIES) install-emacs-flatpak-symlinks
 	install -D --no-target-directory emacs/emacs.el '$(EMACS_PREFIX)/init.el'
 
 clean-emacs:
