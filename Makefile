@@ -1,6 +1,6 @@
 PREFIX := $(HOME)
 
-ALL_COMPONENTS = emacs git
+ALL_COMPONENTS = bash emacs git
 COMPONENTS = $(ALL_COMPONENTS)
 
 CONFIG_EMACS_PLATFORM = native
@@ -25,6 +25,18 @@ clean: $(patsubst %,clean-%,$(ALL_COMPONENTS))
 
 %.elc: %.el
 	emacs --quick --batch --eval "(byte-compile-file (cadr command-line-args-left))" -- '$<'
+
+
+.PHONY: all-bash install-bash clean-bash
+
+all-bash: bash/rc.bash bash/profile.bash bash/redirect_rc.bash bash/redirect_profile.bash
+
+install-bash: all-bash
+	install -D --target-directory="$${HOME}/.config/bash/" bash/rc.bash bash/profile.bash
+	install -D --no-target-directory bash/redirect_rc.bash "$${HOME}/.bashrc"
+	install -D --no-target-directory bash/redirect_profile.bash "$${HOME}/.bash_profile"
+
+clean-bash:
 
 
 .PHONY: all-emacs install-emacs clean-emacs
