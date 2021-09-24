@@ -1,6 +1,6 @@
 PREFIX ?= $(HOME)
 
-ALL_COMPONENTS = bash emacs git xdg
+ALL_COMPONENTS = bash emacs git ssh xdg
 
 CONFIG_EMACS_PLATFORM = native
 CONFIG_TOOLBOX =
@@ -75,6 +75,17 @@ install-git: git/gitconfig git/gitignore
 
 clean-git:
 	-rm -f git/gitconfig
+
+
+.PHONY: all-ssh install-ssh clean-ssh
+
+all-ssh: ssh/config ssh/stub_config
+
+install-ssh: all-ssh
+	install -D --no-target-directory --mode 600 ssh/config '$(PREFIX)/.config/ssh/config'
+	install -D --no-target-directory --mode 600 ssh/stub_config '$(PREFIX)/.ssh/config'
+
+clean-ssh:
 
 
 .PHONY: all-xdg install-xdg clean-xdg
