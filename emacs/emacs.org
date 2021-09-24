@@ -138,7 +138,16 @@
 #+begin_src elisp
   (use-package sly
     :straight t
-    :custom (inferior-lisp-program "sbcl"))
+    :custom
+    (inferior-lisp-program "sbcl")
+    (defun my-call/eww-browse-url (orig-fun &rest args)
+      (let ((browse-url-browser-function 'eww-browse-url))
+        (apply orig-fun args)))
+    (dolist ((sym '(common-lisp-hyperspec
+                    common-lisp-hyperspec-lookup-reader-macro
+                    common-lisp-hyperspec-format
+                    common-lisp-hyperspec-glossary-term)))
+      (advice-add sym :around 'my-call/eww-browse-url)))
 #+end_src
 
 *** Quicklisp
