@@ -2,7 +2,14 @@
 #+AUTHOR: Andrew Soutar <andrew@andrewsoutar.com>
 #+STARTUP: indent
 
+#+PROPERTY: header-args:elisp :lexical t
+
 * Trivia
+** Use lexical binding in config file
+This MUST be the first line
+#+begin_src elisp
+  ;;; -*- lexical-binding: t -*-
+#+end_src
 ** Pull out environment variables
 #+begin_src elisp :var emacs-platform=(getenv "CONFIG_EMACS_PLATFORM") toolbox=(getenv "CONFIG_TOOLBOX")
   (defvar *config-emacs-platform* emacs-platform)
