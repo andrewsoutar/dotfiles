@@ -58,6 +58,7 @@ This MUST be the first line
   (straight-use-package 'use-package)
   (use-package use-package
     :straight t
+    :load t
     :custom (use-package-always-defer t))
 #+end_src
 ** Use a different custom file
@@ -156,7 +157,6 @@ This MUST be the first line
                     common-lisp-hyperspec-glossary-term)))
       (advice-add sym :around 'my-call/eww-browse-url)))
 #+end_src
-
 *** Quicklisp
 #+begin_src elisp
   (use-package sly-quicklisp
@@ -165,7 +165,14 @@ This MUST be the first line
   (use-package sly
     :config (add-to-list 'sly-contribs 'sly-quicklisp))
 #+end_src
+*** Macrostep
+#+begin_src elisp
+  (use-package sly-macrostep
+    :straight t)
 
+  (use-package sly
+    :config (add-to-list 'sly-contribs 'sly-macrostep))
+#+end_src
 * Magit
 #+begin_src elisp
   (use-package magit
