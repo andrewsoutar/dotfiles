@@ -237,11 +237,19 @@ This MUST be the first line
 
     (use-package sly-tramp
       :config
-      (add-to-list 'sly-filename-translations
-                   (sly-create-filename-translator
-                    :machine-instance "toolbox"
-                    :remote-host *config-toolbox*
-                    :username "")))
+      (setf (alist-get "^toolbox$" sly-filename-translations nil 'remove 'string=)
+            (list (lambda (emacs-filename)
+                    (if (tramp-tramp-file-p emacs-filename)
+                        (let* ((name (tramp-dissect-file-name emacs-filename))
+                               (method (tramp-file-name-method name)))
+                          (if (or (string= method "toolbox") (string= method "flatpak-host"))
+                              (tramp-file-name-unquote-localname name)
+                            (error "Unrecognized method %s" method)))
+                      emacs-filename))
+                  (lambda (lisp-filename)
+                    (if (string-prefix-p (expand-file-name "~") lisp-filename)
+                        lisp-filename
+                      (tramp-make-tramp-file-name (tramp-dissect-file-name "/toolbox::") lisp-filename))))))
 
     (use-package woman
       :config
