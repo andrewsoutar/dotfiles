@@ -147,7 +147,9 @@ This MUST be the first line
   (use-package sly
     :straight t
     :custom
-    (inferior-lisp-program "sbcl")
+    (inferior-lisp-program `(,@(when (equal *config-emacs-platform* "flatpak") '("flatpak-spawn" "--host"))
+                             ,@(when *config-toolbox* '("toolbox" "run"))
+                             "sbcl"))
     :config
     (defun my-call/eww-browse-url (orig-fun &rest args)
       (let ((browse-url-browser-function 'eww-browse-url))
