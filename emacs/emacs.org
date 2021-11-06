@@ -1,6 +1,6 @@
 #+TITLE: Andrew Soutar's Emacs Config
 #+AUTHOR: Andrew Soutar <andrew@andrewsoutar.com>
-#+STARTUP: indent
+#+STARTUP: indent overview
 
 #+PROPERTY: header-args:elisp :lexical t
 
