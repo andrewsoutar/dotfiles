@@ -208,15 +208,12 @@ This MUST be the first line
 #+begin_src elisp
   (use-package web-mode
     :straight t
+    :mode "\\.html\\'" "\\.css\\'" "\\.js\\'" "\\.json\\'" "\\.ts\\'" "\\.svelte\\'"
     :custom
     (web-mode-code-indent-offset 2)
     (web-mode-css-indent-offset 2)
     (web-mode-markup-indent-offset 2)
     (web-mode-sql-indent-offset 2))
-
-  (use-package emacs
-    :config
-    (add-to-list 'auto-mode-alist '("\\.svelte\\'" . web-mode)))
 #+end_src
 * Local setup
 #+begin_src elisp
