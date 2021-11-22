@@ -213,7 +213,9 @@ This MUST be the first line
 #+begin_src elisp
   (use-package web-mode
     :straight t
-    :mode "\\.html\\'" "\\.css\\'" "\\.js\\'" "\\.json\\'" "\\.ts\\'" "\\.svelte\\'"
+    :mode "\\.html\\'" "\\.css\\'" "\\.js\\'" "\\.mjs\\'" "\\.json\\'" "\\.ts\\'" "\\.svelte\\'"
+    :config (setf (alist-get "javascript" web-mode-content-types-alist nil 'remove 'string=)
+                  "\\.m?js\\'")
     :custom
     (web-mode-code-indent-offset 2)
     (web-mode-css-indent-offset 2)
