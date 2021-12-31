@@ -221,6 +221,12 @@ This MUST be the first line
     (web-mode-css-indent-offset 2)
     (web-mode-markup-indent-offset 2)
     (web-mode-sql-indent-offset 2))
+
+  (define-derived-mode web-js-mode web-mode "WebJS"
+      (web-mode-set-content-type "javascript"))
+
+  (use-package org-mode
+    :config (setf (alist-get "js" org-src-lang-modes nil 'remove 'string=) 'web-js))
 #+end_src
 * Indent Tools
 #+begin_src elisp
