@@ -87,8 +87,16 @@ This MUST be the first line
     (scroll-bar-mode nil))
 
   (use-package solarized-theme
-    :straight t
-    :init (load-theme 'solarized-dark t))
+    :straight t)
+
+  (deftheme init "The theme added by the init file")
+  (custom-theme-set-faces 'init
+                          '(org-block-begin-line ((t :underline nil)))
+                          '(org-block-end-line ((t :overline nil))))
+
+  (load-theme 'solarized-dark t)
+
+  (enable-theme 'init)
 #+end_src
 * Remoting
 #+begin_src elisp
