@@ -100,6 +100,16 @@ install-ssh: all-ssh
 clean-ssh:
 
 
+.PHONY: all-tmux install-tmux clean-tmux
+
+all-tmux: tmux/config
+
+install-tmux:
+	install -D --no-target-directory --mode 644 tmux/config '$(PREFIX)/.config/tmux/tmux.conf'
+
+clean-tmux:
+
+
 .PHONY: all-xdg install-xdg clean-xdg
 
 all-xdg: xdg/env.conf
