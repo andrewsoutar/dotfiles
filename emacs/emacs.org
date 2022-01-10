@@ -133,6 +133,18 @@ This MUST be the first line
   (use-package elec-pair
     :hook (prog-mode . electric-pair-local-mode))
 #+end_src
+* Language Servers
+** LSP Mode
+#+begin_src elisp
+  (use-package lsp-mode
+    :straight t)
+#+end_src
+** LSP Containers
+#+begin_src elisp
+  (use-package lsp-docker
+    :straight t
+    :config (setf lsp-docker-command "flatpak-spawn --host podman"))
+#+end_src
 * Lisp Stuff
 #+begin_src elisp
   (use-package lisp-mode
