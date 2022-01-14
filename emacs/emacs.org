@@ -252,7 +252,8 @@ This MUST be the first line
     (web-mode-code-indent-offset 2)
     (web-mode-css-indent-offset 2)
     (web-mode-markup-indent-offset 2)
-    (web-mode-sql-indent-offset 2))
+    (web-mode-sql-indent-offset 2)
+    (web-mode-part-padding 2))
 
   (define-derived-mode web-js-mode web-mode "WebJS"
       (web-mode-set-content-type "javascript"))
