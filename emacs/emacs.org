@@ -126,7 +126,9 @@ This MUST be the first line
 ** Indentation
 #+begin_src elisp
   (use-package emacs
-    :custom (indent-tabs-mode nil))
+    :custom
+    (indent-tabs-mode nil)
+    (tab-width 2))
 #+end_src
 ** Electricity
 #+begin_src elisp
