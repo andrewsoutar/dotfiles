@@ -245,7 +245,7 @@ This MUST be the first line
 #+begin_src elisp
   (use-package web-mode
     :straight t
-    :mode "\\.html\\'" "\\.css\\'" "\\.js\\'" "\\.mjs\\'" "\\.json\\'" "\\.ts\\'" "\\.svelte\\'"
+    :mode "\\.html\\'" "\\.css\\'" "\\.js\\'" "\\.mjs\\'" "\\.cjs\\'" "\\.json\\'" "\\.ts\\'" "\\.svelte\\'"
     :config (setf (alist-get "javascript" web-mode-content-types-alist nil 'remove 'string=)
                   "\\.m?js\\'")
     :custom
