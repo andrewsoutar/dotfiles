@@ -52,7 +52,7 @@ clean-container_shim:
 
 .PHONY: all-emacs install-emacs clean-emacs
 
-EMACS_DEPENDENCIES = emacs/emacs.el
+EMACS_DEPENDENCIES = emacs/emacs.el emacs/straight.lock.el
 
 .PHONY: install-emacs-flatpak-symlinks
 ifeq ($(CONFIG_EMACS_PLATFORM), flatpak)
@@ -68,7 +68,8 @@ endif
 all-emacs: $(EMACS_DEPENDENCIES)
 
 install-emacs: $(EMACS_DEPENDENCIES) install-emacs-flatpak-symlinks
-	install -D --no-target-directory emacs/emacs.el '$(EMACS_PREFIX)/init.el'
+	install -D --no-target-directory --mode=644 emacs/emacs.el '$(EMACS_PREFIX)/init.el'
+	install -D --no-target-directory --mode=644 emacs/straight.lock.el '$(EMACS_PREFIX)/straight.lock.el'
 
 clean-emacs:
 	-rm -f $(EMACS_DEPENDENCIES)

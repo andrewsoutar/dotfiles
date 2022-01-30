@@ -40,6 +40,7 @@ This MUST be the first line
 ** Bootstrap [[https://github.com/raxod502/straight.el][straight.el]]
 #+begin_src elisp
   (defvar straight-base-dir (emacs-cache-path))
+  (defvar straight-profiles `((nil . ,(emacs-config-path "straight.lock.el"))))
   (defvar bootstrap-version)
   (let ((bootstrap-file
          (expand-file-name "straight/repos/straight.el/bootstrap.el" straight-base-dir))
