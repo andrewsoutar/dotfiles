@@ -269,6 +269,25 @@ This MUST be the first line
     :straight t
     :bind ("C-c >" . indent-tools-hydra/body))
 #+end_src
+* Slack
+#+begin_src elisp
+  (use-package slack
+    :straight t
+    :custom
+    (slack-buffer-emojify t)
+    (slack-prefer-current-team t)
+    :config
+    (let ((auths (auth-source-search :host "slack.com")))
+      (mapcar (lambda (info)
+                (let* ((password (funcall (plist-get info :secret)))
+                       (has-cookie (string-match "^\\([^:]*\\):\\(.*\\)$" password)))
+                  (apply #'slack-register-team
+                         :name (plist-get info :user)
+                         :default (null (cdr auths))
+                         :token (if has-cookie (match-string 1 password) password)
+                         (when has-cookie `(:cookie ,(match-string 2 password))))))
+              auths)))
+#+end_src
 * Various Modes
 ** YAML
 #+begin_src elisp
