@@ -5,6 +5,8 @@ ALL_COMPONENTS = bash container_shim emacs git ssh xdg
 CONFIG_EMACS_PLATFORM = native
 CONFIG_TOOLBOX =
 
+EMACS_PROGRAM ?= emacs
+
 include platform.mk
 
 
@@ -19,11 +21,11 @@ install: $(patsubst %,install-%,$(COMPONENTS))
 clean: $(patsubst %,clean-%,$(ALL_COMPONENTS))
 
 %.el: %.org
-	$(CONFIG_ENV) emacs --quick --batch --eval "(require 'org)" --eval \
+	$(CONFIG_ENV) '$(EMACS_PROGRAM)' --quick --batch --eval "(require 'org)" --eval \
 	  "(let ((org-file (cadr command-line-args-left))) (org-babel-tangle-file org-file (concat (file-name-base org-file) \".el\")))" -- '$<'
 
 %.elc: %.el
-	emacs --quick --batch --eval "(byte-compile-file (cadr command-line-args-left))" -- '$<'
+	'$(EMACS_PROGRAM)' --quick --batch --eval "(byte-compile-file (cadr command-line-args-left))" -- '$<'
 
 
 .PHONY: all-bash install-bash clean-bash
