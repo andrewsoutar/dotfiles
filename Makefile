@@ -31,9 +31,10 @@ clean: $(patsubst %,clean-%,$(ALL_COMPONENTS))
 all-bash: bash/rc.bash bash/profile.bash bash/redirect_rc.bash bash/redirect_profile.bash
 
 install-bash: all-bash
-	install -D --target-directory='$(PREFIX)/.config/bash/' bash/rc.bash bash/profile.bash
-	install -D --no-target-directory bash/redirect_rc.bash '$(PREFIX)/.bashrc'
-	install -D --no-target-directory bash/redirect_profile.bash '$(PREFIX)/.bash_profile'
+	mkdir -p '$(PREFIX)/.config/bash'
+	install bash/rc.bash bash/profile.bash '$(PREFIX)/.config/bash/'
+	install bash/redirect_rc.bash '$(PREFIX)/.bashrc'
+	install bash/redirect_profile.bash '$(PREFIX)/.bash_profile'
 
 clean-bash:
 
@@ -43,8 +44,9 @@ clean-bash:
 all-container_shim: container_shim/shim.sh
 
 install-container_shim: all-container_shim
+	mkdir -p '$(PREFIX)/.local/bin'
 	for shim in $(CONTAINER_SHIMS); do \
-	  install -D --no-target-directory --mode=755 container_shim/shim.sh '$(PREFIX)/.local/bin/'"$$shim"; \
+	  install -m 755 container_shim/shim.sh '$(PREFIX)/.local/bin/'"$$shim"; \
 	done
 
 clean-container_shim:
@@ -68,8 +70,9 @@ endif
 all-emacs: $(EMACS_DEPENDENCIES)
 
 install-emacs: $(EMACS_DEPENDENCIES) install-emacs-flatpak-symlinks
-	install -D --no-target-directory --mode=644 emacs/emacs.el '$(EMACS_PREFIX)/init.el'
-	install -D --no-target-directory --mode=644 emacs/straight.lock.el '$(EMACS_PREFIX)/straight.lock.el'
+	mkdir -p '$(EMACS_PREFIX)'
+	install -m 644 emacs/emacs.el '$(EMACS_PREFIX)/init.el'
+	install -m 644 emacs/straight.lock.el '$(EMACS_PREFIX)/straight.lock.el'
 
 clean-emacs:
 	-rm -f $(EMACS_DEPENDENCIES)
@@ -83,8 +86,9 @@ git/gitconfig: git/make-gitconfig.sh
 all-git: git/gitconfig git/gitignore
 
 install-git: git/gitconfig git/gitignore
-	install -D --no-target-directory git/gitconfig '$(PREFIX)/.config/git/config'
-	install -D --no-target-directory git/gitignore '$(PREFIX)/.config/git/ignore'
+	mkdir -p '$(PREFIX)/.config/git'
+	install git/gitconfig '$(PREFIX)/.config/git/config'
+	install git/gitignore '$(PREFIX)/.config/git/ignore'
 
 clean-git:
 	-rm -f git/gitconfig
@@ -95,8 +99,9 @@ clean-git:
 all-ssh: ssh/config ssh/stub_config
 
 install-ssh: all-ssh
-	install -D --no-target-directory --mode 600 ssh/config '$(PREFIX)/.config/ssh/config'
-	install -D --no-target-directory --mode 600 ssh/stub_config '$(PREFIX)/.ssh/config'
+	mkdir -p '$(PREFIX)/.config/ssh'
+	install -m 600 ssh/config '$(PREFIX)/.config/ssh/config'
+	install -m 600 ssh/stub_config '$(PREFIX)/.ssh/config'
 
 clean-ssh:
 
@@ -106,7 +111,8 @@ clean-ssh:
 all-tmux: tmux/config
 
 install-tmux:
-	install -D --no-target-directory --mode 644 tmux/config '$(PREFIX)/.config/tmux/tmux.conf'
+	mkdir -p '$(PREFIX)/.config/tmux'
+	install -m 644 tmux/config '$(PREFIX)/.config/tmux/tmux.conf'
 
 clean-tmux:
 
@@ -116,6 +122,7 @@ clean-tmux:
 all-xdg: xdg/env.conf
 
 install-xdg: all-xdg
-	install -D --no-target-directory xdg/env.conf '$(PREFIX)/.config/environment.d/10-xdg.conf'
+	mkdir -p '$(PREFIX)/.config/environment.d'
+	install xdg/env.conf '$(PREFIX)/.config/environment.d/10-xdg.conf'
 
 clean-xdg:
