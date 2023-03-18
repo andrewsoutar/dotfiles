@@ -83,7 +83,7 @@ This MUST be the first line
 #+begin_src elisp
   (use-package emacs
     :custom
-    (menu-bar-mode nil)
+    (menu-bar-mode (eq system-type 'darwin))
     (tool-bar-mode nil)
     (scroll-bar-mode nil))
 
