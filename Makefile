@@ -21,11 +21,11 @@ install: $(patsubst %,install-%,$(COMPONENTS))
 clean: $(patsubst %,clean-%,$(ALL_COMPONENTS))
 
 %.el: %.org
-	$(CONFIG_ENV) '$(EMACS_PROGRAM)' --quick --batch --eval "(require 'org)" --eval \
+	$(CONFIG_ENV) $(EMACS_PROGRAM) --quick --batch --eval "(require 'org)" --eval \
 	  "(let ((org-file (cadr command-line-args-left))) (org-babel-tangle-file org-file (concat (file-name-base org-file) \".el\")))" -- '$<'
 
 %.elc: %.el
-	'$(EMACS_PROGRAM)' --quick --batch --eval "(byte-compile-file (cadr command-line-args-left))" -- '$<'
+	$(EMACS_PROGRAM) --quick --batch --eval "(byte-compile-file (cadr command-line-args-left))" -- '$<'
 
 
 .PHONY: all-bash install-bash clean-bash
@@ -62,8 +62,9 @@ EMACS_DEPENDENCIES = emacs/emacs.el emacs/straight.lock.el
 ifeq ($(CONFIG_EMACS_PLATFORM), flatpak)
 EMACS_PREFIX ?= $(PREFIX)/.var/app/org.gnu.emacs/config/emacs
 install-emacs-flatpak-symlinks:
-	ln --relative --symbolic --force --target-directory='$(EMACS_PREFIX)/../' \
-	  '$(PREFIX)/.config/bash' '$(PREFIX)/.config/git' '$(PREFIX)/.config/ssh'
+	install -l rs '$(PREFIX)/.config/bash' '$(EMACS_PREFIX)/../bash'
+	install -l rs '$(PREFIX)/.config/git' '$(EMACS_PREFIX)/../git'
+	install -l rs '$(PREFIX)/.config/ssh' '$(EMACS_PREFIX)/../ssh'
 else
 EMACS_PREFIX ?= $(PREFIX)/.config/emacs
 install-emacs-flatpak-symlinks:
@@ -75,6 +76,9 @@ install-emacs: $(EMACS_DEPENDENCIES) install-emacs-flatpak-symlinks
 	mkdir -p '$(EMACS_PREFIX)'
 	install -m 644 emacs/emacs.el '$(EMACS_PREFIX)/init.el'
 	install -m 644 emacs/straight.lock.el '$(EMACS_PREFIX)/straight.lock.el'
+ifdef EMACS_INIT_PREFIX
+	install -l rs '$(EMACS_PREFIX)/init.el' '$(EMACS_INIT_PREFIX)/init.el'
+endif
 
 clean-emacs:
 	-rm -f $(EMACS_DEPENDENCIES)
