@@ -79,6 +79,15 @@ This MUST be the first line
   (use-package windmove
     :init (windmove-default-keybindings))
 #+end_src
+
+** Customizations for MacOS
+#+begin_src elisp
+  (when (eq system-type 'darwin)
+    (use-package emacs
+      :custom
+      (ns-command-modifier 'meta)
+      (ns-option-modifier 'super)))
+#+end_src
 * Theme and Visuals
 #+begin_src elisp
   (use-package emacs
